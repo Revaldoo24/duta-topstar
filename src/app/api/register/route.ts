@@ -21,6 +21,29 @@ type RequiredTextField = (typeof REQUIRED_TEXT_FIELDS)[number];
 type RegistrationPayload = Record<RequiredTextField, string>;
 type DriveClient = ReturnType<typeof google.drive>;
 type SheetsClient = ReturnType<typeof google.sheets>;
+const SUBMITTED_AT_TIME_ZONE = "Asia/Jakarta";
+
+function getSubmittedAtUtc7(): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: SUBMITTED_AT_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  })
+    .formatToParts(new Date())
+    .reduce<Record<string, string>>((accumulator, part) => {
+      if (part.type !== "literal") {
+        accumulator[part.type] = part.value;
+      }
+      return accumulator;
+    }, {});
+
+  return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second} UTC+7`;
+}
 
 function getEnv(name: string): string {
   const value = process.env[name];
@@ -168,7 +191,7 @@ async function appendToSheet(
     requestBody: {
       values: [
         [
-          new Date().toISOString(),
+          getSubmittedAtUtc7(),
           payload.fullName,
           payload.school,
           payload.email,

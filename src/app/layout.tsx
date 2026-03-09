@@ -16,6 +16,11 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dutateladan-stekom.vercel.app"),
+  icons: {
+    icon: "/images/favicon.png",
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
   title: {
     default: "Duta Teladan Universitas STEKOM",
     template: "%s | Duta Teladan Universitas STEKOM",
