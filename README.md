@@ -20,6 +20,52 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Google Sheets + Drive Integration
+
+Form submit is wired to:
+- Upload proof images to Google Drive folder
+- Save text fields + image URLs to Google Sheets
+
+### 1. Environment Variables
+
+Copy `.env.example` to `.env.local` and fill all values:
+
+```bash
+cp .env.example .env.local
+# Windows PowerShell:
+Copy-Item .env.example .env.local
+```
+
+Required keys:
+- `GOOGLE_OAUTH_CLIENT_ID`
+- `GOOGLE_OAUTH_CLIENT_SECRET`
+- `GOOGLE_OAUTH_REFRESH_TOKEN`
+- `GOOGLE_DRIVE_FOLDER_ID`
+- `GOOGLE_SHEETS_SPREADSHEET_ID`
+- `GOOGLE_SHEETS_SHEET_NAME` (optional, default: `Registrations`)
+
+### 2. Google Access Setup
+
+- Enable Google Drive API and Google Sheets API in your Google Cloud project.
+- Generate OAuth refresh token from the same Google account that owns the Drive folder and Spreadsheet.
+- Make sure the OAuth scopes include Drive + Sheets access.
+
+### 3. Expected Sheet Columns
+
+Create columns in this order:
+
+1. `submitted_at`
+2. `full_name`
+3. `school_or_institution`
+4. `email`
+5. `whatsapp`
+6. `tiktok`
+7. `instagram`
+8. `motivation`
+9. `proof_urls`
+
+API endpoint used by frontend: `POST /api/register`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
