@@ -9,13 +9,13 @@ import { MotionProvider } from "@/components/landing/motion";
 import { SiteHeader } from "@/components/landing/site-header";
 import { HeroSection } from "@/components/landing/sections/hero-section";
 import { AboutSection } from "@/components/landing/sections/about-section";
-import { TrainingSection } from "@/components/landing/sections/training-section";
 import { IncomeSection } from "@/components/landing/sections/income-section";
 import { BenefitsSection } from "@/components/landing/sections/benefits-section";
 import { TimelineSection } from "@/components/landing/sections/timeline-section";
 import { OutcomesSection } from "@/components/landing/sections/outcomes-section";
 import { AmbassadorsSection } from "@/components/landing/sections/ambassadors-section";
 import { GallerySection } from "@/components/landing/sections/gallery-section";
+import { CompaniesSection } from "@/components/landing/sections/companies-section";
 import { FaqSection } from "@/components/landing/sections/faq-section";
 import { FinalCtaSection } from "@/components/landing/sections/final-cta-section";
 
@@ -32,15 +32,23 @@ export function LandingPage() {
         />
 
         <main>
-          <HeroSection locale={locale} content={programContent.hero} />
+          <HeroSection
+            locale={locale}
+            content={programContent.hero}
+            galleryItems={programContent.gallery.items}
+          />
           <AboutSection locale={locale} content={programContent.about} />
-          <TrainingSection locale={locale} content={programContent.training} />
           <IncomeSection locale={locale} content={programContent.income} />
           <BenefitsSection locale={locale} content={programContent.benefits} />
           <TimelineSection locale={locale} content={programContent.timeline} />
-          <OutcomesSection locale={locale} content={programContent.outcomes} />
+          <OutcomesSection
+            locale={locale}
+            content={programContent.outcomes}
+            ambassadors={programContent.ambassadors.items}
+          />
           <AmbassadorsSection locale={locale} content={programContent.ambassadors} />
           <GallerySection locale={locale} content={programContent.gallery} />
+          <CompaniesSection locale={locale} />
           <FaqSection locale={locale} content={programContent.faq} />
           <FinalCtaSection
             locale={locale}
@@ -114,21 +122,11 @@ export function LandingPage() {
                   <li>
                     <a
                       className="transition hover:text-slate-900 dark:hover:text-white"
-                      href="https://www.instagram.com"
+                      href="https://www.instagram.com/dutateladanunivstekom/"
                       target="_blank"
                       rel="noreferrer"
                     >
                       Instagram
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="transition hover:text-slate-900 dark:hover:text-white"
-                      href="https://discord.com"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Discord
                     </a>
                   </li>
                 </ul>

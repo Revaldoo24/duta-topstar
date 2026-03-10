@@ -1,29 +1,10 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Camera,
-  Clapperboard,
-  Megaphone,
-  Mic2,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react";
+import { PlayCircle } from "lucide-react";
 
 import { t } from "@/data/program-content";
 import type { Locale, ProgramContent } from "@/types/program";
-import { StaggerGroup, StaggerItem } from "@/components/landing/motion";
 import { SectionShell } from "@/components/landing/section-shell";
-  
-const trainingIcons = [
-  TrendingUp,
-  BadgeCheck,
-  Mic2,
-  Clapperboard,
-  Camera,
-  Sparkles,
-  Megaphone,
-];
 
 interface TrainingSectionProps {
   locale: Locale;
@@ -31,6 +12,17 @@ interface TrainingSectionProps {
 }
 
 export function TrainingSection({ locale, content }: TrainingSectionProps) {
+  const rawVideoUrl = process.env.NEXT_PUBLIC_TRAINING_VIDEO_URL;
+  const videoUrl = rawVideoUrl
+    ? (() => {
+        const match = rawVideoUrl.match(/\/file\/d\/([^/]+)/);
+        if (match) {
+          return `https://drive.google.com/file/d/${match[1]}/preview`;
+        }
+        return rawVideoUrl;
+      })()
+    : "";
+
   return (
     <SectionShell
       id="pelajari"
@@ -44,26 +36,50 @@ export function TrainingSection({ locale, content }: TrainingSectionProps) {
         <div className="absolute -left-14 top-10 h-40 w-40 rounded-full bg-blue-300/30 dark:bg-blue-700/25" />
         <div className="absolute right-0 bottom-0 h-44 w-44 rounded-full bg-pink-300/25 dark:bg-fuchsia-700/20" />
 
-        <StaggerGroup className="relative grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3" stagger={0.08}>
-          {content.items.map((item, index) => {
-            const Icon = trainingIcons[index % trainingIcons.length];
-            return (
-              <StaggerItem key={item.id}>
-                <article className="group h-full rounded-2xl border border-blue-100/80 bg-white/90 p-4 transition duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_0_0_1px_rgba(88,130,255,0.14),0_18px_34px_-20px_rgba(63,107,222,0.45)] sm:p-5 dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-none dark:hover:shadow-[0_16px_30px_-22px_rgba(59,130,246,0.5)]">
-                  <span className="inline-flex rounded-xl bg-blue-50 p-2.5 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground dark:bg-slate-800 dark:group-hover:bg-primary">
-                    <Icon className="size-5" />
-                  </span>
-                  <h3 className="mt-3.5 text-base font-semibold text-slate-900 sm:mt-4 sm:text-lg dark:text-slate-100">
-                    {t(item.title, locale)}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
-                    {t(item.description, locale)}
+        <div className="relative grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300">
+              <PlayCircle className="size-3.5 text-primary" />
+              Video Materi
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 sm:text-2xl dark:text-slate-100">
+              {locale === "id"
+                ? "Tonton materi inti langsung dari Universitas STEKOM."
+                : "Watch the core training directly from Universitas STEKOM."}
+            </h3>
+            <p className="text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
+              {locale === "id"
+                ? "Video ini merangkum kurikulum utama yang akan kamu pelajari selama program berlangsung."
+                : "This video summarizes the main curriculum you will learn throughout the program."}
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl border border-blue-100/80 bg-white/90 shadow-lg shadow-blue-100/40 dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-none">
+            <div className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/80 dark:text-slate-300">
+              Materi Resmi
+            </div>
+            <div className="aspect-video w-full bg-slate-100 dark:bg-slate-800">
+              {videoUrl ? (
+                <iframe
+                  title="Materi Duta Teladan Universitas STEKOM"
+                  src={videoUrl}
+                  className="h-full w-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-sm text-slate-500 dark:text-slate-400">
+                  <PlayCircle className="size-10 text-slate-400" />
+                  <p>
+                    {locale === "id"
+                      ? "Link video belum diatur. Tambahkan NEXT_PUBLIC_TRAINING_VIDEO_URL."
+                      : "Video link not set. Add NEXT_PUBLIC_TRAINING_VIDEO_URL."}
                   </p>
-                </article>
-              </StaggerItem>
-            );
-          })}
-        </StaggerGroup>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </SectionShell>
   );

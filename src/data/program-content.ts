@@ -7,7 +7,7 @@ export function t(text: LocalizedText, locale: Locale): string {
 export const programContent: ProgramContent = {
   brand: {
     id: "Duta Teladan Universitas STEKOM",
-    en: "STEKOM University Exemplary Ambassador",
+    en: "Universitas STEKOM Exemplary Ambassador",
   },
   nav: [
     {
@@ -19,11 +19,6 @@ export const programContent: ProgramContent = {
       id: "nav-about",
       href: "#tentang",
       label: { id: "Program", en: "Program" },
-    },
-    {
-      id: "nav-training",
-      href: "#pelajari",
-      label: { id: "Materi", en: "Training" },
     },
     {
       id: "nav-income",
@@ -42,8 +37,8 @@ export const programContent: ProgramContent = {
     },
     {
       id: "nav-outcome",
-      href: "#hasil",
-      label: { id: "Hasil", en: "Outcomes" },
+      href: "#testimoni",
+      label: { id: "Testimoni", en: "Testimonials" },
     },
     {
       id: "nav-ambassadors",
@@ -73,7 +68,7 @@ export const programContent: ProgramContent = {
     },
     title: {
       id: "Jadi Duta Teladan Universitas STEKOM.",
-      en: "Become STEKOM University's Exemplary Ambassador.",
+      en: "Become Universitas STEKOM's Exemplary Ambassador.",
     },
     subtitle: {
       id: "Bangun personal branding yang kuat. Kuasai strategi konten, tingkatkan skill digital, dan kembangkan potensimu. Dapatkan uang saku rutin plus bonus performa. Di sini kamu berkembang sekaligus dibayar atas progres & kontribusimu.",
@@ -112,15 +107,15 @@ export const programContent: ProgramContent = {
       {
         id: "hero-highlight-4",
         label: {
-          id: "Program Resmi STEKOM",
-          en: "Official STEKOM Program",
+          id: "Program Resmi Universitas STEKOM",
+          en: "Official Universitas STEKOM Program",
         },
       },
     ],
   },
   about: {
     eyebrow: {
-      id: "Apa itu program ini?",
+      id: "Program ini",
       en: "What is this program?",
     },
     title: {
@@ -128,8 +123,8 @@ export const programContent: ProgramContent = {
       en: "Duta Teladan Universitas STEKOM is not a typical student organization.",
     },
     description: {
-      id: "Program pengembangan content creator resmi Univeritas STEKOM dengan pelatihan intensif, terstruktur, dan berorientasi hasil. Program ini gratis, dan peserta aktif berpeluang mendapatkan network, uang saku hingga pengahsilan tambahan.",
-      en: "An official STEKOM University content creator development program with intensive, structured, and outcome-driven training. The program is free, and active participants have opportunities to gain networks, stipends, and additional income.",
+      id: "Program pengembangan content creator resmi Universitas STEKOM dengan pelatihan intensif, terstruktur, dan berorientasi hasil. Program ini gratis, dan peserta aktif berpeluang mendapatkan network, uang saku hingga penghasilan tambahan.",
+      en: "An official Universitas STEKOM content creator development program with intensive, structured, and outcome-driven training. The program is free, and active participants have opportunities to gain networks, stipends, and additional income.",
     },
     highlights: [
       {
@@ -371,8 +366,8 @@ export const programContent: ProgramContent = {
           en: "Prestigious ambassador experience",
         },
         description: {
-          id: "Menjadi representasi resmi STEKOM dalam ekosistem kreatif digital.",
-          en: "Represent STEKOM University in a digital creative ecosystem.",
+          id: "Menjadi representasi resmi Universitas STEKOM dalam ekosistem kreatif digital.",
+          en: "Represent Universitas STEKOM in a digital creative ecosystem.",
         },
       },
       {
@@ -419,6 +414,17 @@ export const programContent: ProgramContent = {
           en: "Become more confident on camera and in public.",
         },
       },
+      {
+        id: "benefit-8",
+        title: {
+          id: "Kesempatan liburan menarik",
+          en: "Exciting travel opportunities",
+        },
+        description: {
+          id: "Berkesempatan liburan ke wisata-wisata menarik, termasuk Bali.",
+          en: "Opportunities to travel to exciting destinations, including Bali.",
+        },
+      },
     ],
   },
   timeline: {
@@ -454,20 +460,20 @@ export const programContent: ProgramContent = {
       {
         id: "timeline-3",
         title: {
-          id: "Training Intensif Content Creator",
-          en: "Intensive Creator Training",
+          id: "Pembekalan & Pelantikan",
+          en: "Briefing & Inauguration",
         },
         description: {
-          id: "Pembekalan skill inti sebelum masuk fase aktif.",
-          en: "Core upskilling before entering active production.",
+          id: "Pembekalan singkat serta prosesi pelantikan dan penyematan gelar Duta Teladan kepada peserta terpilih.",
+          en: "A short briefing plus the inauguration and title conferment for selected participants.",
         },
       },
       {
         id: "timeline-4",
         title: { id: "Aktif sebagai Duta", en: "Active as Ambassador" },
         description: {
-          id: "Menjalankan tugas mingguan (repost konten + mengikuti tips konten mingguan) dan tugas bulanan (bikin konten).",
-          en: "Complete weekly tasks (reposting content + following weekly content tips) and monthly tasks (creating content).",
+          id: "Mengikuti mentoring Content Creator serta menjalankan tugas mingguan (repost konten) dan tugas bulanan (membuat konten).",
+          en: "Join content creator mentoring and complete weekly tasks (reposting content) plus monthly tasks (creating content).",
         },
       },
       {
@@ -485,16 +491,16 @@ export const programContent: ProgramContent = {
   },
   outcomes: {
     eyebrow: {
-      id: "Hasil yang didapatkan",
-      en: "Expected outcomes",
+      id: "Testimoni",
+      en: "Testimonials",
     },
     title: {
-      id: "Bukan hanya pengalaman, tapi kesiapan skill untuk masa depan.",
-      en: "Not just experience, but practical readiness for the future.",
+      id: "Cerita langsung dari Duta Teladan Universitas STEKOM.",
+      en: "Stories from Duta Teladan Universitas STEKOM.",
     },
     description: {
-      id: "Program ini mendorong hasil terukur pada profil digital dan performa personal.",
-      en: "The program drives measurable outcomes in your digital profile and personal performance.",
+      id: "Testimoni ini bersifat dummy untuk kebutuhan layout dan skema desain.",
+      en: "These testimonials are dummy text for layout and design purposes.",
     },
     items: [
       {
@@ -711,8 +717,8 @@ export const programContent: ProgramContent = {
           en: "Who can apply?",
         },
         answer: {
-          id: "Program ini terbuka untuk pendaftar yang memenuhi syarat pada periode rekrutmen aktif STEKOM. Seluruh peserta mengikuti alur seleksi dan pelatihan yang sama.",
-          en: "The program is open to applicants who meet the requirements in each active STEKOM recruitment period. All participants follow the same selection and training flow.",
+          id: "Program ini terbuka untuk pendaftar yang memenuhi syarat pada periode rekrutmen aktif Universitas STEKOM. Seluruh peserta mengikuti alur seleksi dan pelatihan yang sama.",
+          en: "The program is open to applicants who meet the requirements in each active Universitas STEKOM recruitment period. All participants follow the same selection and training flow.",
         },
       },
       {
@@ -775,7 +781,7 @@ export const programContent: ProgramContent = {
   finalCta: {
     title: {
       id: "Siap Jadi Duta Teladan Universitas STEKOM?",
-      en: "Ready to become STEKOM University's Exemplary Ambassador?",
+    en: "Ready to become Universitas STEKOM's Exemplary Ambassador?",
     },
     subtitle: {
       id: "Bangun nama. Bangun skill. Dapatkan penghasilan sambil berkembang.",

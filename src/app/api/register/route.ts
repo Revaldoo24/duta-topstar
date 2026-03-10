@@ -16,6 +16,7 @@ const REQUIRED_TEXT_FIELDS = [
 
 const MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024;
 const MAX_FILE_COUNT = 10;
+const DRIVE_UPLOAD_CONCURRENCY = Number(process.env.DRIVE_UPLOAD_CONCURRENCY ?? 3);
 
 type RequiredTextField = (typeof REQUIRED_TEXT_FIELDS)[number];
 type RegistrationPayload = Record<RequiredTextField, string>;
@@ -121,58 +122,89 @@ function validateProofFiles(files: File[]): string | null {
   return null;
 }
 
+function createLimiter(concurrency: number) {
+  let activeCount = 0;
+  const queue: Array<() => void> = [];
+
+  const next = () => {
+    activeCount = Math.max(0, activeCount - 1);
+    if (queue.length > 0) {
+      const run = queue.shift();
+      run?.();
+    }
+  };
+
+  return async <T>(task: () => Promise<T>) => {
+    if (activeCount >= concurrency) {
+      await new Promise<void>((resolve) => {
+        queue.push(resolve);
+      });
+    }
+
+    activeCount += 1;
+    try {
+      return await task();
+    } finally {
+      next();
+    }
+  };
+}
+
+async function uploadSingleFile(
+  drive: DriveClient,
+  file: File,
+  folderId: string,
+) {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const created = await drive.files.create({
+    requestBody: {
+      name: `proof-${Date.now()}-${file.name}`,
+      parents: [folderId],
+      mimeType: file.type || undefined,
+    },
+    media: {
+      mimeType: file.type || "application/octet-stream",
+      body: Readable.from(buffer),
+    },
+    fields: "id, webViewLink, webContentLink",
+    supportsAllDrives: true,
+  });
+
+  const fileId = created.data.id;
+  if (!fileId) {
+    throw new Error("Failed to upload proof file to Google Drive.");
+  }
+
+  await drive.permissions.create({
+    fileId,
+    requestBody: {
+      role: "reader",
+      type: "anyone",
+    },
+    supportsAllDrives: true,
+  });
+
+  return (
+    created.data.webViewLink ??
+    created.data.webContentLink ??
+    `https://drive.google.com/file/d/${fileId}/view`
+  );
+}
+
 async function uploadFilesToDrive(
   drive: DriveClient,
   files: File[],
   folderId: string,
 ) {
-  const proofUrls: string[] = [];
+  const limiter = createLimiter(Number.isFinite(DRIVE_UPLOAD_CONCURRENCY) && DRIVE_UPLOAD_CONCURRENCY > 0
+    ? DRIVE_UPLOAD_CONCURRENCY
+    : 3);
 
-  for (const file of files) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const created = await drive.files.create({
-      requestBody: {
-        name: `proof-${Date.now()}-${file.name}`,
-        parents: [folderId],
-        mimeType: file.type || undefined,
-      },
-      media: {
-        mimeType: file.type || "application/octet-stream",
-        body: Readable.from(buffer),
-      },
-      fields: "id, webViewLink, webContentLink",
-      supportsAllDrives: true,
-    });
+  const results = await Promise.all(
+    files.map((file) => limiter(() => uploadSingleFile(drive, file, folderId))),
+  );
 
-    const fileId = created.data.id;
-    if (!fileId) {
-      throw new Error("Failed to upload proof file to Google Drive.");
-    }
-
-    await drive.permissions.create({
-      fileId,
-      requestBody: {
-        role: "reader",
-        type: "anyone",
-      },
-      supportsAllDrives: true,
-    });
-
-    const linkData = await drive.files.get({
-      fileId,
-      fields: "webViewLink, webContentLink",
-      supportsAllDrives: true,
-    });
-
-    const fileUrl =
-      linkData.data.webViewLink ??
-      linkData.data.webContentLink ??
-      `https://drive.google.com/file/d/${fileId}/view`;
-
-    proofUrls.push(fileUrl);
-  }
-
-  return proofUrls;
+  return results;
 }
 
 async function appendToSheet(

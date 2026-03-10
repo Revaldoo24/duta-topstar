@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { m, useReducedMotion } from "framer-motion";
 
 import { t } from "@/data/program-content";
-import type { Locale, ProgramContent } from "@/types/program";
+import type { GalleryItem, Locale, ProgramContent } from "@/types/program";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FadeInUp, StaggerGroup, StaggerItem } from "@/components/landing/motion";
@@ -12,10 +13,13 @@ import { FadeInUp, StaggerGroup, StaggerItem } from "@/components/landing/motion
 interface HeroSectionProps {
   locale: Locale;
   content: ProgramContent["hero"];
+  galleryItems: GalleryItem[];
 }
 
-export function HeroSection({ locale, content }: HeroSectionProps) {
+export function HeroSection({ locale, content, galleryItems }: HeroSectionProps) {
   const reducedMotion = useReducedMotion();
+  const heroHighlights = content.highlights.slice(0, 4);
+  const galleryPreview = galleryItems.slice(0, 4);
 
   return (
     <section
@@ -61,31 +65,42 @@ export function HeroSection({ locale, content }: HeroSectionProps) {
               variant="outline"
               className="w-full rounded-full border-pink-300 bg-pink-50 px-7 text-sm font-semibold text-pink-600 hover:bg-pink-100 hover:text-pink-700 dark:border-fuchsia-600/55 dark:bg-fuchsia-900/30 dark:text-fuchsia-200 dark:hover:bg-fuchsia-900/50 dark:hover:text-fuchsia-100 sm:w-auto"
             >
-              <Link href="#pelajari">{t(content.secondaryCta, locale)}</Link>
+              <Link href="#tentang">{t(content.secondaryCta, locale)}</Link>
             </Button>
           </div>
         </FadeInUp>
 
-        <StaggerGroup className="grid gap-3 sm:grid-cols-2 sm:gap-4" stagger={0.1} delay={0.12}>
-          {content.highlights.map((highlight, index) => (
-            <StaggerItem key={highlight.id}>
-              <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/90 p-3.5 shadow-sm shadow-blue-100/70 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-100/90 sm:p-4 dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-none dark:hover:shadow-[0_16px_30px_-22px_rgba(59,130,246,0.5)]">
+        <div className="relative">
+          <div className="relative mx-auto grid w-full max-w-md gap-2.5 sm:max-w-lg sm:grid-cols-2 sm:gap-4">
+            {galleryPreview.map((item, index) => {
+              const highlight = heroHighlights[index];
+              return (
                 <div
-                  className="absolute inset-x-0 top-0 h-1"
-                  style={{
-                    background:
-                      index % 2 === 0
-                        ? "linear-gradient(90deg,#6d97ff,#8cb4ff)"
-                        : "linear-gradient(90deg,#ff88be,#ff9dc9)",
-                  }}
-                />
-                <p className="pt-1.5 text-sm font-semibold text-slate-700 sm:pt-2 sm:text-base dark:text-slate-200">
-                  {t(highlight.label, locale)}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerGroup>
+                  key={item.id}
+                  className={[
+                    "group relative overflow-hidden rounded-2xl border border-white/80 bg-white/80 shadow-lg shadow-blue-100/60 transition duration-300 hover:-translate-y-1 dark:border-slate-700/70 dark:bg-slate-900/70 dark:shadow-none",
+                    index % 2 === 0 ? "rotate-1" : "-rotate-1",
+                  ].join(" ")}
+                >
+                  <Image
+                    src={item.src}
+                    alt={t(item.alt, locale)}
+                    width={item.width}
+                    height={item.height}
+                    className="h-40 w-full object-cover sm:h-44 lg:h-48"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent opacity-70 transition group-hover:opacity-50" />
+                  {highlight && (
+                    <div className="pointer-events-none absolute left-3 top-3 max-w-[85%] rounded-2xl border border-white/90 bg-white/95 px-2.5 py-1.5 text-[10px] font-semibold leading-snug text-slate-700 shadow-lg shadow-blue-100/80 backdrop-blur-sm dark:border-slate-700/80 dark:bg-slate-900/90 dark:text-slate-100 sm:px-3 sm:py-2 sm:text-xs">
+                      {t(highlight.label, locale)}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

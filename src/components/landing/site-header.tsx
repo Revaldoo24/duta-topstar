@@ -183,8 +183,10 @@ export function SiteHeader({
       <div
         id="mobile-nav"
         className={cn(
-          "overflow-hidden border-t border-slate-200/70 bg-white/95 px-4 backdrop-blur-xl transition-all duration-300 dark:border-slate-700/70 dark:bg-slate-950/95 lg:hidden",
-          isMenuOpen ? "max-h-[75vh] py-4 opacity-100" : "max-h-0 py-0 opacity-0",
+          "border-t border-slate-200/70 bg-white/95 px-4 backdrop-blur-xl transition-all duration-300 dark:border-slate-700/70 dark:bg-slate-950/95 lg:hidden",
+          isMenuOpen
+            ? "max-h-[calc(100dvh-4rem)] overflow-y-auto py-4 opacity-100 overscroll-contain"
+            : "max-h-0 overflow-hidden py-0 opacity-0",
         )}
       >
         <nav className="mx-auto w-full max-w-7xl">

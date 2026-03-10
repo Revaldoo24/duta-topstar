@@ -65,8 +65,8 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
       : "REGISTRATION FORM FIELDS";
   const formSubtitle =
     locale === "id"
-      ? "Pelatihan Content Creator - Duta Teladan UnivSTEKOM"
-      : "Content Creator Training - Duta Teladan UnivSTEKOM";
+      ? "Pelatihan Content Creator - Duta Teladan Universitas STEKOM"
+      : "Content Creator Training - Duta Teladan Universitas STEKOM";
   const submitLabel = locale === "id" ? "Kirim Pendaftaran" : "Submit Registration";
   const submitSuccess =
     locale === "id"
@@ -84,8 +84,8 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
       : "Make sure all information is valid and reachable.";
   const followProofHint =
     locale === "id"
-      ? "Unggah screenshot bukti bahwa kamu sudah mengikuti akun resmi UnivSTEKOM di Instagram dan TikTok."
-      : "Upload screenshots proving you already follow UnivSTEKOM on Instagram and TikTok.";
+      ? "Unggah screenshot bukti bahwa kamu sudah mengikuti 4 akun berikut: Universitas STEKOM (TikTok & Instagram) dan TopLoker.com (TikTok & Instagram)."
+      : "Upload screenshots proving you follow 4 accounts: Universitas STEKOM (TikTok & Instagram) and TopLoker.com (TikTok & Instagram).";
   const followProofMultiHint =
     locale === "id"
       ? "Bisa upload beberapa file sekaligus. Jika salah upload, hapus file yang tidak sesuai."
@@ -94,6 +94,22 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
     locale === "id"
       ? "Upload minimal 1 file bukti follow."
       : "Upload at least one follow proof file.";
+  const followAccounts = [
+    {
+      name: "Universitas STEKOM",
+      tiktok: "https://tiktok.com/@stekomuniversity",
+      tiktokHandle: "@stekomuniversity",
+      instagram: "https://instagram.com/universitasstekom",
+      instagramHandle: "@universitasstekom",
+    },
+    {
+      name: "TopLoker.com",
+      tiktok: "https://tiktok.com/@toploker.com",
+      tiktokHandle: "@toploker.com",
+      instagram: "https://instagram.com/toplokercom",
+      instagramHandle: "@toplokercom",
+    },
+  ];
   const selectedFilesLabel =
     locale === "id" ? "File terpilih" : "Selected files";
   const removeAllFilesLabel =
@@ -405,7 +421,7 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="mt-4 grid grid-cols-3 gap-2">
+                <div className="mt-4 grid gap-2 sm:grid-cols-3">
                   <div className="rounded-xl border border-white/80 bg-white/90 px-3 py-2 text-center dark:border-slate-700/80 dark:bg-slate-900/70">
                     <p className="text-xl font-extrabold text-slate-900 dark:text-slate-100">8</p>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-600 dark:text-slate-300">
@@ -470,7 +486,7 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
                     <span className="inline-flex size-5 items-center justify-center rounded-full bg-rose-600 text-[11px] font-bold text-white">
                       7
                     </span>
-                    Bukti Follow Instagram & TikTok UnivSTEKOM
+                    Bukti Follow Instagram & TikTok Universitas STEKOM + TopLoker.com
                     <ImageUp className="ml-auto size-4 text-rose-600 dark:text-rose-300" />
                   </Label>
                   <p className="mt-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 sm:text-xs">
@@ -479,6 +495,68 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
                   <p className="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 sm:text-xs">
                     {followProofMultiHint}
                   </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {followAccounts.map((account) => (
+                      <div
+                        key={account.name}
+                        className="flex h-full flex-col rounded-2xl border border-rose-100 bg-white/90 p-4 text-xs text-slate-700 shadow-sm dark:border-rose-400/30 dark:bg-slate-900/60 dark:text-slate-200"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                              {account.name}
+                            </p>
+                            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-rose-600/80 dark:text-rose-300/90">
+                              Wajib Follow
+                            </p>
+                          </div>
+                          <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-700 dark:border-rose-400/30 dark:bg-rose-500/10 dark:text-rose-200">
+                            2 akun
+                          </span>
+                        </div>
+
+                        <div className="mt-3 grid gap-2">
+                          <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70">
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                              TikTok
+                            </span>
+                            <span className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                              {account.tiktokHandle}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70">
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                              Instagram
+                            </span>
+                            <span className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                              {account.instagramHandle}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                          <Button
+                            asChild
+                            size="sm"
+                            className="h-9 w-full rounded-full px-3 text-xs"
+                          >
+                            <a href={account.instagram} target="_blank" rel="noreferrer">
+                              Instagram
+                            </a>
+                          </Button>
+                          <Button
+                            asChild
+                            size="sm"
+                            className="h-9 w-full rounded-full bg-slate-950 px-3 text-xs text-white hover:bg-slate-900"
+                          >
+                            <a href={account.tiktok} target="_blank" rel="noreferrer">
+                              TikTok
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                   <Input
                     id="followProof"
                     name="followProof"
@@ -556,8 +634,8 @@ export function RegistrationForm({ locale, formContent }: RegistrationFormProps)
                   </Label>
                   <p className="mt-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 sm:text-xs">
                     {locale === "id"
-                      ? "Apa motivasimu bergabung dalam pelatihan Content Creator oleh Duta Teladan UnivSTEKOM?"
-                      : "What is your motivation to join this content creator training by Duta Teladan UnivSTEKOM?"}
+                      ? "Apa motivasimu bergabung dalam pelatihan Content Creator oleh Duta Teladan Universitas STEKOM?"
+                      : "What is your motivation to join this content creator training by Duta Teladan Universitas STEKOM?"}
                   </p>
                   <Textarea
                     id="motivation"

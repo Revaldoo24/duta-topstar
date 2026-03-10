@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   keywords: [
     "Duta Teladan Universitas STEKOM",
     "Content Creator Pelajar",
-    "Program Content Creator STEKOM",
+    "Program Content Creator Universitas STEKOM",
     "Pelatihan Konten Kreator",
     "Personal Branding Kreator",
   ],

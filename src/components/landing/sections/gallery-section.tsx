@@ -61,7 +61,7 @@ export function GallerySection({ locale, content }: GallerySectionProps) {
       eyebrow={t(content.eyebrow, locale)}
       title={t(content.title, locale)}
       description={t(content.description, locale)}
-      contentClassName="mt-12"
+      contentClassName="mt-10 sm:mt-12"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12">
         {content.items.map((item, index) => {
