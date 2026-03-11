@@ -10,10 +10,11 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { t } from "@/data/program-content";
 import type { Locale, ProgramContent } from "@/types/program";
+import { getPublicConfig } from "@/lib/public-config";
 import { StaggerGroup, StaggerItem } from "@/components/landing/motion";
 import { SectionShell } from "@/components/landing/section-shell";
 
@@ -33,17 +34,34 @@ interface BenefitsSectionProps {
 }
 
 export function BenefitsSection({ locale, content }: BenefitsSectionProps) {
-  const rawVideoUrl = process.env.NEXT_PUBLIC_BENEFITS_VIDEO_URL;
-  const videoUrl = useMemo(() => {
-    if (!rawVideoUrl) return "";
-    const embedMatch = rawVideoUrl.match(/youtube\.com\/embed\/([^?&]+)/);
-    if (embedMatch) return rawVideoUrl;
-    const watchMatch = rawVideoUrl.match(/[?&]v=([^?&]+)/);
-    if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}?rel=0&modestbranding=1`;
-    const shortMatch = rawVideoUrl.match(/youtu\.be\/([^?&]+)/);
-    if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?rel=0&modestbranding=1`;
-    return rawVideoUrl;
+  const rawVideoUrl = process.env.NEXT_PUBLIC_BENEFITS_VIDEO_URL ?? "";
+  const [runtimeVideoUrl, setRuntimeVideoUrl] = useState("");
+
+  useEffect(() => {
+    if (rawVideoUrl) return;
+    let isActive = true;
+
+    getPublicConfig().then((config) => {
+      if (!isActive) return;
+      setRuntimeVideoUrl(config.benefitsVideoUrl ?? "");
+    });
+
+    return () => {
+      isActive = false;
+    };
   }, [rawVideoUrl]);
+
+  const resolvedVideoUrl = (rawVideoUrl || runtimeVideoUrl).trim();
+  const videoUrl = useMemo(() => {
+    if (!resolvedVideoUrl) return "";
+    const embedMatch = resolvedVideoUrl.match(/youtube\.com\/embed\/([^?&]+)/);
+    if (embedMatch) return resolvedVideoUrl;
+    const watchMatch = resolvedVideoUrl.match(/[?&]v=([^?&]+)/);
+    if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}?rel=0&modestbranding=1`;
+    const shortMatch = resolvedVideoUrl.match(/youtu\.be\/([^?&]+)/);
+    if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?rel=0&modestbranding=1`;
+    return resolvedVideoUrl;
+  }, [resolvedVideoUrl]);
 
   return (
     <SectionShell

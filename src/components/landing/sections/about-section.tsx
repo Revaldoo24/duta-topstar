@@ -1,9 +1,11 @@
 "use client";
 
 import { PlayCircle, Sparkle, TrendingUp, WalletCards } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { t } from "@/data/program-content";
 import type { Locale, ProgramContent } from "@/types/program";
+import { getPublicConfig } from "@/lib/public-config";
 import { FadeInUp, StaggerGroup, StaggerItem } from "@/components/landing/motion";
 import { SectionShell } from "@/components/landing/section-shell";
 
@@ -15,16 +17,32 @@ interface AboutSectionProps {
 }
 
 export function AboutSection({ locale, content }: AboutSectionProps) {
-  const rawVideoUrl = process.env.NEXT_PUBLIC_TRAINING_VIDEO_URL;
-  const videoUrl = rawVideoUrl
-    ? (() => {
-        const match = rawVideoUrl.match(/\/file\/d\/([^/]+)/);
-        if (match) {
-          return `https://drive.google.com/file/d/${match[1]}/preview`;
-        }
-        return rawVideoUrl;
-      })()
-    : "";
+  const rawVideoUrl = process.env.NEXT_PUBLIC_TRAINING_VIDEO_URL ?? "";
+  const [runtimeVideoUrl, setRuntimeVideoUrl] = useState("");
+
+  useEffect(() => {
+    if (rawVideoUrl) return;
+    let isActive = true;
+
+    getPublicConfig().then((config) => {
+      if (!isActive) return;
+      setRuntimeVideoUrl(config.trainingVideoUrl ?? "");
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, [rawVideoUrl]);
+
+  const resolvedVideoUrl = (rawVideoUrl || runtimeVideoUrl).trim();
+  const videoUrl = useMemo(() => {
+    if (!resolvedVideoUrl) return "";
+    const match = resolvedVideoUrl.match(/\/file\/d\/([^/]+)/);
+    if (match) {
+      return `https://drive.google.com/file/d/${match[1]}/preview`;
+    }
+    return resolvedVideoUrl;
+  }, [resolvedVideoUrl]);
 
   return (
     <SectionShell
