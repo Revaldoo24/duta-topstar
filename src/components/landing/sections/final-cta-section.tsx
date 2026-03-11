@@ -7,6 +7,7 @@ import { t } from "@/data/program-content";
 import type { Locale, ProgramContent } from "@/types/program";
 import { FadeInUp } from "@/components/landing/motion";
 import { SectionShell } from "@/components/landing/section-shell";
+import { ClientOnly } from "@/components/ui/client-only";
 import { Button } from "@/components/ui/button";
 import { RegistrationForm } from "@/components/landing/registration-form";
 
@@ -64,7 +65,17 @@ export function FinalCtaSection({
         </FadeInUp>
 
         <div id="registration-form" className="mt-8 sm:mt-10">
-          <RegistrationForm locale={locale} formContent={formContent} />
+          <ClientOnly
+            fallback={
+              <div className="rounded-3xl border border-white/70 bg-white/90 p-4 shadow-xl shadow-slate-300/30 sm:p-8 dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-none">
+                <p className="text-sm font-semibold text-slate-700 sm:text-base dark:text-slate-200">
+                  Memuat formulir pendaftaran...
+                </p>
+              </div>
+            }
+          >
+            <RegistrationForm locale={locale} formContent={formContent} />
+          </ClientOnly>
         </div>
       </div>
     </SectionShell>
